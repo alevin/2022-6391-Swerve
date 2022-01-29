@@ -72,7 +72,7 @@ public class RobotContainer {
     buttonX.whenPressed(m_drivetrainSubsystem::zeroGyroscope);
     
 
-    buttonB.whenPressed(() -> this.testPath());
+    buttonB.whenPressed(() -> this.PPSwerveCommand());
 
     
   }
@@ -111,7 +111,7 @@ public class RobotContainer {
     //  Since a PathPlannerTrajectory extends the WPILib Trajectory, it can be referenced as one
     //This will load the file "Example Path.path" and generate it with a max velocity of 8 m/s and a max acceleration of 5 m/s^2
 
-    Trajectory examplePath = PathPlanner.loadPath("NewPath", 8, 5);
+    Trajectory examplePath = PathPlanner.loadPath("Straight", 0.5, 0.5);
 
     // This trajectory can then be passed to a path follower such as a RamseteCommand 
     // Or the path can be sampled at a given point in time for custom path following
@@ -126,8 +126,8 @@ public class RobotContainer {
 
 
 
-  public void PPSwerveCommand() {
-    PathPlannerTrajectory examplePath = PathPlanner.loadPath("NewPath", 8, 5);
+  public PPSwerveControllerCommand PPSwerveCommand() {
+    PathPlannerTrajectory examplePath = PathPlanner.loadPath("Straight", 0.5, 0.5);
     PPSwerveControllerCommand command = new PPSwerveControllerCommand(
       examplePath,
       m_drivetrainSubsystem::getPose,
@@ -138,6 +138,8 @@ public class RobotContainer {
       m_drivetrainSubsystem::setStates,
       m_drivetrainSubsystem
     );
+
+    return command;
   }
 
  
