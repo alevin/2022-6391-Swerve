@@ -128,8 +128,12 @@ public class RobotContainer {
     System.out.println("IN PPSWERVECOMMAND");
     PathPlannerTrajectory examplePath = PathPlanner.loadPath("Straight", 2, 2);
     System.out.println("exampleaPath getInitialState: " + examplePath.getInitialState());
+    System.out.println("examplePath getEndState: " + examplePath.getEndState());
     System.out.println("examplePath getState 0: " + examplePath.getState(0));
     System.out.println("examplePath getState 1: " + examplePath.getState((1)));
+    System.out.println("examplePath getState 2: " +  examplePath.getState(2));
+    System.out.println("examplePath getState 2: " +  examplePath.getState(3));
+    System.out.println("examplePath getState 2: " +  examplePath.getState(4));
 
     System.out.println("WHERE ARE YOU ERIKA: " + examplePath.sample(0.5).velocityMetersPerSecond);
     System.out.println("acceleration: " + examplePath.sample(0.5).accelerationMetersPerSecondSq);
