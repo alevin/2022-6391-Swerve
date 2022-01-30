@@ -65,7 +65,7 @@ public class RobotContainer {
 
     start.whenPressed(m_drivetrainSubsystem::toggleDriveMode);
     buttonY.whenPressed(() -> m_drivetrainSubsystem.setWheelAngle(0));
-    buttonA.whenPressed(() -> m_drivetrainSubsystem.changeWheelAngleBy45());
+    buttonA.whenPressed(() -> m_drivetrainSubsystem.resetOdometry(m_drivetrainSubsystem.getPose()));
     buttonX.whenPressed(m_drivetrainSubsystem::zeroGyroscope);
 
     //PathPlannerTrajectory examplePath = PathPlanner.loadPath("Straight", 0.01, 0.01);
