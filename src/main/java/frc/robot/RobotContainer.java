@@ -157,6 +157,8 @@ public class RobotContainer {
         m_drivetrainSubsystem::setStates,
         m_drivetrainSubsystem);
 
+        m_drivetrainSubsystem.resetOdometry(examplePath.getInitialPose());
+
     
     return command;
   }

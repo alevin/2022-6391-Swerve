@@ -178,6 +178,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
     return m_odometry.getPoseMeters();
   }
 
+  public void resetOdometry(Pose2d pose) {
+    m_odometry.resetPosition(pose, m_navx.getRotation2d());
+  }
+  
+
   public SwerveDriveKinematics getKinematics() {
     return m_kinematics;
   }
@@ -257,9 +262,18 @@ public class DrivetrainSubsystem extends SubsystemBase {
         m_backRightModule.set(m_states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());      
      }
    
-   
+  //TODO: we guessed the m_states that are in the sample code
   @Override
   public void periodic() {
+    m_odometry.update(
+        m_navx.getRotation2d(),
+        m_states[0],
+        m_states[2],
+        m_states[1],
+        m_states[3]
+    );
+    
+    
     SwerveModuleState[] states;
     if(driveMode) {
         states = m_states;
@@ -270,5 +284,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
     SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
 
     setStatesInternal(states);
+
   }
 }
