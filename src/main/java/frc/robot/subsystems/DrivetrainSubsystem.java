@@ -93,7 +93,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private TrapezoidProfile.Constraints kThetaControllerConstraints =
         new TrapezoidProfile.Constraints(Math.PI, Math.PI);
   private ProfiledPIDController thetaController = new ProfiledPIDController(-1, 0, 0, kThetaControllerConstraints);
-  
+  private SwerveModuleState[] m_states;
 
   public DrivetrainSubsystem() {
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
@@ -101,7 +101,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     aIR = 0.0;
     driveMode = true;
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
+    drive(new ChassisSpeeds(0,0,0));
     // There are 4 methods you can call to create your swerve modules.
     // The method you use depends on what motors you are using.
     //
@@ -214,7 +214,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public void drive(ChassisSpeeds chassisSpeeds) {
-    m_chassisSpeeds = chassisSpeeds;
+    m_states = m_kinematics.toSwerveModuleStates(chassisSpeeds);
   }
 
   public void setWheelAngle(double angleInRad) {
@@ -232,10 +232,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
           return driveMode;
   }
 
-  private SwerveModuleState[] driveModeCalculateStates() {
-     SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds); 
-     return states;
-  }
 
   private SwerveModuleState[] calibrateModeCalculateStates() {
         SwerveModuleState[] states = new SwerveModuleState[4];
@@ -246,24 +242,33 @@ public class DrivetrainSubsystem extends SubsystemBase {
         return states;
      }
 
+
   public void setStates(SwerveModuleState[] states) {
-     m_frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());
-     m_frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians());
-     m_backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians());
-     m_backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());      
+     System.out.println("states: " + states[0] + " " + states[1] + " " + states[2] + " " + states[3]);
+        setStatesInternal(states);
   }
 
+
+  private void setStatesInternal(SwerveModuleState[] states) {
+        m_states = states;
+        m_frontLeftModule.set(m_states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());
+        m_frontRightModule.set(m_states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians());
+        m_backLeftModule.set(m_states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians());
+        m_backRightModule.set(m_states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());      
+     }
+   
+   
   @Override
   public void periodic() {
     SwerveModuleState[] states;
     if(driveMode) {
-        states = driveModeCalculateStates();
+        states = m_states;
     }
     else {
         states = calibrateModeCalculateStates();
     }
     SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
 
-    setStates(states);
+    setStatesInternal(states);
   }
 }

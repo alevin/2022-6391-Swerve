@@ -126,7 +126,7 @@ public class RobotContainer {
   public PPSwerveControllerCommand PPSwerveCommand() {
   //public void PPSwerveCommand() {
     System.out.println("IN PPSWERVECOMMAND");
-    PathPlannerTrajectory examplePath = PathPlanner.loadPath("Straight", 2, 2);
+    PathPlannerTrajectory examplePath = PathPlanner.loadPath("Turn", 1, 2);
     System.out.println("TOTAL TIME SECONDS " + examplePath.getTotalTimeSeconds());
     System.out.println("exampleaPath getInitialState: " + examplePath.getInitialState());
     System.out.println("examplePath getEndState: " + examplePath.getEndState());
