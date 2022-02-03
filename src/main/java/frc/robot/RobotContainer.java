@@ -103,47 +103,9 @@ public class RobotContainer {
     return value;
   }
 
-  public void testPath() {
-    // Since a PathPlannerTrajectory extends the WPILib Trajectory, it can be
-    // referenced as one
-    // This will load the file "Example Path.path" and generate it with a max
-    // velocity of 8 m/s and a max acceleration of 5 m/s^2
-
-    Trajectory examplePath = PathPlanner.loadPath("Straight", 0.01, 0.01);
-
-    // This trajectory can then be passed to a path follower such as a
-    // RamseteCommand
-    // Or the path can be sampled at a given point in time for custom path following
-
-    // Sample the state of the path at 1.2 seconds
-    Trajectory.State exampleState = examplePath.sample(1.2);
-
-    // Print the velocity at the sampled time
-    System.out.println("HEY LOOK AT ME" + exampleState.velocityMetersPerSecond);
-
-  }
-
   public PPSwerveControllerCommand PPSwerveCommand() {
   //public void PPSwerveCommand() {
-    System.out.println("IN PPSWERVECOMMAND");
     PathPlannerTrajectory examplePath = PathPlanner.loadPath("Turn", 1, 2);
-    System.out.println("TOTAL TIME SECONDS " + examplePath.getTotalTimeSeconds());
-    System.out.println("exampleaPath getInitialState: " + examplePath.getInitialState());
-    System.out.println("examplePath getEndState: " + examplePath.getEndState());
-    System.out.println("examplePath getState 0: " + examplePath.getState(0));
-    System.out.println("examplePath getState 1: " + examplePath.getState((1)));
-    System.out.println("examplePath getState 2: " +  examplePath.getState(2));
-    System.out.println("examplePath getState 3: " +  examplePath.getState(3));
-    System.out.println("examplePath getState 4: " +  examplePath.getState(4));
-
-    System.out.println("WHERE ARE YOU ERIKA: " + examplePath.sample(0.5).velocityMetersPerSecond);
-    System.out.println("acceleration: " + examplePath.sample(0.5).accelerationMetersPerSecondSq);
-    System.out.println("WHERE ARE YOU ERIKA 2: " + examplePath.sample(1).velocityMetersPerSecond);
-    System.out.println("acceleration: " + examplePath.sample(1).accelerationMetersPerSecondSq);
-    System.out.println("WHERE ARE YOU ERIKA 3: " + examplePath.sample(1.5).velocityMetersPerSecond);
-    System.out.println("acceleration: " + examplePath.sample(1.5).accelerationMetersPerSecondSq);
-    System.out.println("WHERE ARE YOU ERIKA 4: " + examplePath.sample(2).velocityMetersPerSecond);
-    System.out.println("acceleration: " + examplePath.sample(2).accelerationMetersPerSecondSq);
     
 
     
