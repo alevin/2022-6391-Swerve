@@ -9,6 +9,8 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -62,15 +64,17 @@ public class RobotContainer {
     JoystickButton buttonX = new JoystickButton(m_controller, XboxController.Button.kX.value);
     JoystickButton buttonY = new JoystickButton(m_controller, XboxController.Button.kY.value);
     JoystickButton start = new JoystickButton(m_controller, XboxController.Button.kStart.value);
+    JoystickButton back = new JoystickButton(m_controller, XboxController.Button.kBack.value);
 
     start.whenPressed(m_drivetrainSubsystem::toggleDriveMode);
     buttonY.whenPressed(() -> m_drivetrainSubsystem.setWheelAngle(0));
     buttonA.whenPressed(() -> m_drivetrainSubsystem.resetOdometry(m_drivetrainSubsystem.getPose()));
-    buttonX.whenPressed(m_drivetrainSubsystem::zeroGyroscope);
+    back.whenPressed(m_drivetrainSubsystem::zeroGyroscope);
 
     //PathPlannerTrajectory examplePath = PathPlanner.loadPath("Straight", 0.01, 0.01);
     
     buttonB.whenPressed(PPSwerveCommand());
+    buttonX.whenPressed(() -> m_drivetrainSubsystem.resetOdometry(new Pose2d(0, 0, new Rotation2d(0))));
 
   }
 
@@ -105,7 +109,7 @@ public class RobotContainer {
 
   public PPSwerveControllerCommand PPSwerveCommand() {
   //public void PPSwerveCommand() {
-    PathPlannerTrajectory examplePath = PathPlanner.loadPath("Turn", 1, 2);
+    PathPlannerTrajectory examplePath = PathPlanner.loadPath("Turn", 0.5, 0.5);
     
 
     
@@ -119,7 +123,7 @@ public class RobotContainer {
         m_drivetrainSubsystem::setStates,
         m_drivetrainSubsystem);
 
-        m_drivetrainSubsystem.resetOdometry(examplePath.getInitialPose());
+        //m_drivetrainSubsystem.resetOdometry(examplePath.getInitialPose());
 
     
     return command;
