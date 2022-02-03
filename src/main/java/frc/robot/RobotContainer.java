@@ -70,7 +70,7 @@ public class RobotContainer {
 
     //PathPlannerTrajectory examplePath = PathPlanner.loadPath("Straight", 0.01, 0.01);
     
-    buttonB.whenPressed(PPSwerveCommand());
+    buttonB.whenPressed(PPSwerveCommandd());
 
   }
 
@@ -103,7 +103,7 @@ public class RobotContainer {
     return value;
   }
 
-  public PPSwerveControllerCommand PPSwerveCommand() {
+  public PPSwerveControllerCommand PPSwerveCommandd() {
   //public void PPSwerveCommand() {
     PathPlannerTrajectory examplePath = PathPlanner.loadPath("Turn", 1, 2);
     
