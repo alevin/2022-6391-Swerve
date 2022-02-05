@@ -92,7 +92,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private TrapezoidProfile.Constraints kThetaControllerConstraints =
         new TrapezoidProfile.Constraints(Math.PI, Math.PI);
-  private ProfiledPIDController thetaController = new ProfiledPIDController(-1, 0, 0, kThetaControllerConstraints);
+  private ProfiledPIDController thetaController = new ProfiledPIDController(1, 0, 0, kThetaControllerConstraints);
   private SwerveModuleState[] m_states;
 
   private int FL = 0;
