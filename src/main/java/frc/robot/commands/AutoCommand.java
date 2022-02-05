@@ -22,7 +22,7 @@ public class AutoCommand extends SequentialCommandGroup {
     public AutoCommand(DrivetrainSubsystem m_drivetrainSubsystem) {
         this.m_drivetrainSubsystem = m_drivetrainSubsystem;
         PathPlannerTrajectory examplePath = PathPlanner.loadPath("curve", 1, 1);
-        addCommands(new InstantCommand(() -> m_drivetrainSubsystem.resetOdometry(new Pose2d(1, 3, new Rotation2d(0)))),
+        addCommands(new InstantCommand(() -> m_drivetrainSubsystem.resetOdometry(examplePath.getInitialPose())),
                     new PPSwerveControllerCommand(
                         examplePath,
                         m_drivetrainSubsystem::getPose,
