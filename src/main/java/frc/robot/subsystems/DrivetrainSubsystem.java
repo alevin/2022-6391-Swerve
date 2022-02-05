@@ -95,6 +95,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private ProfiledPIDController thetaController = new ProfiledPIDController(-1, 0, 0, kThetaControllerConstraints);
   private SwerveModuleState[] m_states;
 
+  private int FL = 0;
+  private int FR = 1;
+  private int BL = 2;
+  private int BR = 3;
+
   public DrivetrainSubsystem() {
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
     m_angleInRad = new Rotation2d(0);
@@ -175,6 +180,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public Pose2d getPose() {
+    System.out.println(m_odometry.getPoseMeters());
     return m_odometry.getPoseMeters();
   }
 
@@ -184,6 +190,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   
 
   public SwerveDriveKinematics getKinematics() {
+    
     return m_kinematics;
   }
 
@@ -240,26 +247,26 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private SwerveModuleState[] calibrateModeCalculateStates() {
         SwerveModuleState[] states = new SwerveModuleState[4];
-        states[0] = new SwerveModuleState(0, m_angleInRad);
-        states[1] = new SwerveModuleState(0, m_angleInRad);
-        states[2] = new SwerveModuleState(0, m_angleInRad);
-        states[3] = new SwerveModuleState(0, m_angleInRad);
+        states[FL] = new SwerveModuleState(0, m_angleInRad);
+        states[FR] = new SwerveModuleState(0, m_angleInRad);
+        states[BL] = new SwerveModuleState(0, m_angleInRad);
+        states[BR] = new SwerveModuleState(0, m_angleInRad);
         return states;
      }
 
 
   public void setStates(SwerveModuleState[] states) {
-     System.out.println("states: " + states[0] + " " + states[1] + " " + states[2] + " " + states[3]);
+//      System.out.println("states: " + states[FL] + " " + states[FR] + " " + states[BL] + " " + states[BR]);
         setStatesInternal(states);
   }
 
 
   private void setStatesInternal(SwerveModuleState[] states) {
         m_states = states;
-        m_frontLeftModule.set(m_states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());
-        m_frontRightModule.set(m_states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians());
-        m_backLeftModule.set(m_states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians());
-        m_backRightModule.set(m_states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());      
+        m_frontLeftModule.set(m_states[FL].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[FL].angle.getRadians());
+        m_frontRightModule.set(m_states[FR].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[FR].angle.getRadians());
+        m_backLeftModule.set(m_states[BL].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[BL].angle.getRadians());
+        m_backRightModule.set(m_states[BR].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[BR].angle.getRadians());      
      }
    
   //TODO: we guessed the m_states that are in the sample code
@@ -267,13 +274,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public void periodic() {
     m_odometry.update(
         m_navx.getRotation2d(),
-        m_states[0],
-        m_states[2],
-        m_states[1],
-        m_states[3]
+        m_states[FL],
+        m_states[FR],
+        m_states[BL],
+        m_states[BR]
     );
-    
-    
+
     SwerveModuleState[] states;
     if(driveMode) {
         states = m_states;

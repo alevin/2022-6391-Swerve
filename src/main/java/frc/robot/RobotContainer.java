@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
+import frc.robot.commands.AutoCommand;
 import frc.robot.commands.DefaultDriveCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -73,8 +74,8 @@ public class RobotContainer {
 
     //PathPlannerTrajectory examplePath = PathPlanner.loadPath("Straight", 0.01, 0.01);
     
-    buttonB.whenPressed(PPSwerveCommand());
-    buttonX.whenPressed(() -> m_drivetrainSubsystem.resetOdometry(new Pose2d(0, 0, new Rotation2d(0))));
+    buttonB.whenPressed(new AutoCommand(m_drivetrainSubsystem));
+   // buttonX.whenPressed(() -> m_drivetrainSubsystem.resetOdometry(new Pose2d(0, 0, new Rotation2d(0))));
 
   }
 
@@ -109,9 +110,9 @@ public class RobotContainer {
 
   public PPSwerveControllerCommand PPSwerveCommand() {
   //public void PPSwerveCommand() {
-    PathPlannerTrajectory examplePath = PathPlanner.loadPath("Turn", 0.5, 0.5);
+    //m_drivetrainSubsystem.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)));    
     
-
+    PathPlannerTrajectory examplePath = PathPlanner.loadPath("Straight2", 0.5, 0.5);
     
     PPSwerveControllerCommand command = new PPSwerveControllerCommand(
         examplePath,
@@ -123,7 +124,7 @@ public class RobotContainer {
         m_drivetrainSubsystem::setStates,
         m_drivetrainSubsystem);
 
-        //m_drivetrainSubsystem.resetOdometry(examplePath.getInitialPose());
+        
 
     
     return command;
