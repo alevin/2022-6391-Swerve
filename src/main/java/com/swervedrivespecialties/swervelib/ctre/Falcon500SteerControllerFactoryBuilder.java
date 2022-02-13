@@ -114,7 +114,7 @@ public final class Falcon500SteerControllerFactoryBuilder {
                 motorConfiguration.supplyCurrLimit.enable = true;
             }
 
-            WPI_TalonFX motor = new WPI_TalonFX(steerConfiguration.getMotorPort(), "Canvore");
+            WPI_TalonFX motor = new WPI_TalonFX(steerConfiguration.getMotorPort(), "roborio");
             motor.configAllSettings(motorConfiguration, CAN_TIMEOUT_MS);
 
             if (hasVoltageCompensation()) {
