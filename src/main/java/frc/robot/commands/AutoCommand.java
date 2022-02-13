@@ -21,10 +21,21 @@ public class AutoCommand extends SequentialCommandGroup {
 
     public AutoCommand(DrivetrainSubsystem m_drivetrainSubsystem) {
         this.m_drivetrainSubsystem = m_drivetrainSubsystem;
-        PathPlannerTrajectory examplePath = PathPlanner.loadPath("curve", 1, 1);
-        addCommands(new InstantCommand(() -> m_drivetrainSubsystem.resetOdometry(examplePath.getInitialPose())),
+        PathPlannerTrajectory curvePath = PathPlanner.loadPath("curve", 1, 1);
+        PathPlannerTrajectory straightPath = PathPlanner.loadPath("Straight2", 0.5, 0.5);
+        addCommands(new InstantCommand(() -> m_drivetrainSubsystem.resetOdometry(curvePath.getInitialPose())),
                     new PPSwerveControllerCommand(
-                        examplePath,
+                        curvePath,
+                        m_drivetrainSubsystem::getPose,
+                        m_drivetrainSubsystem.getKinematics(),
+                        new PIDController(1, 0, 0),
+                        new PIDController(1, 0, 0),
+                        m_drivetrainSubsystem.getThetaController(),
+                        m_drivetrainSubsystem::setStates,
+                        m_drivetrainSubsystem),
+                    new InstantCommand(() -> m_drivetrainSubsystem.resetOdometry(straightPath.getInitialPose())),
+                    new PPSwerveControllerCommand(
+                        straightPath,
                         m_drivetrainSubsystem::getPose,
                         m_drivetrainSubsystem.getKinematics(),
                         new PIDController(1, 0, 0),
