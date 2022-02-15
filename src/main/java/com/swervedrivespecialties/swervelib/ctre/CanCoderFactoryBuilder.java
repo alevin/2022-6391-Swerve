@@ -9,7 +9,7 @@ import com.swervedrivespecialties.swervelib.AbsoluteEncoderFactory;
 
 public class CanCoderFactoryBuilder {
     private Direction direction = Direction.COUNTER_CLOCKWISE;
-    private int periodMilliseconds = 10;
+    private int periodMilliseconds = 100;
 
     public CanCoderFactoryBuilder withReadingUpdatePeriod(int periodMilliseconds) {
         this.periodMilliseconds = periodMilliseconds;
