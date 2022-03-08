@@ -29,6 +29,7 @@ public class RobotContainer {
 
   public RobotContainer() {
     m_drivetrainSubsystem.zeroGyroscope();
+    m_drivetrainSubsystem.forcingZero();
     // Set up the default command for the drivetrain.
     // The controls are for field-oriented driving:
     // Left stick Y axis -> forward and backwards movement
@@ -67,11 +68,11 @@ public class RobotContainer {
     JoystickButton start = new JoystickButton(m_controller, XboxController.Button.kStart.value);
     JoystickButton back = new JoystickButton(m_controller, XboxController.Button.kBack.value);
 
-    start.whenPressed(m_drivetrainSubsystem::toggleDriveMode);
-    buttonY.whenPressed(() -> m_drivetrainSubsystem.setWheelAngle(0));
-    buttonA.whenPressed(() -> m_drivetrainSubsystem.resetOdometry(m_drivetrainSubsystem.getPose()));
+    buttonX.whenPressed(() -> m_drivetrainSubsystem.forcingZero());
+    //start.whenPressed(m_drivetrainSubsystem::toggleDriveMode);
+   // buttonY.whenPressed(() -> m_drivetrainSubsystem.setWheelAngle(0));
     back.whenPressed(m_drivetrainSubsystem::zeroGyroscope);
-
+    buttonY.whenPressed(() -> System.out.println(m_drivetrainSubsystem.getPose()));
     //PathPlannerTrajectory examplePath = PathPlanner.loadPath("Straight", 0.01, 0.01);
     
     buttonB.whenPressed(new AutoCommand(m_drivetrainSubsystem));

@@ -14,6 +14,8 @@ public class DefaultDriveCommand extends CommandBase {
     private final DoubleSupplier m_translationYSupplier;
     private final DoubleSupplier m_rotationSupplier;
 
+    private boolean robotOriented;
+
     public DefaultDriveCommand(DrivetrainSubsystem drivetrainSubsystem,
                                DoubleSupplier translationXSupplier,
                                DoubleSupplier translationYSupplier,
@@ -22,6 +24,7 @@ public class DefaultDriveCommand extends CommandBase {
         this.m_translationXSupplier = translationXSupplier;
         this.m_translationYSupplier = translationYSupplier;
         this.m_rotationSupplier = rotationSupplier;
+        robotOriented = true;
 
         addRequirements(drivetrainSubsystem);
     }
@@ -32,14 +35,24 @@ public class DefaultDriveCommand extends CommandBase {
     public void execute() {
         // You can use `new ChassisSpeeds(...)` for robot-oriented movement instead of field-oriented movement
         // System.out.println(m_translationXSupplier.getAsDouble());
-        m_drivetrainSubsystem.drive(
+        //if(robotOriented) {
+            m_drivetrainSubsystem.drive(
                 ChassisSpeeds.fromFieldRelativeSpeeds(
-            m_translationXSupplier.getAsDouble(),
-            m_translationYSupplier.getAsDouble(),
-            m_rotationSupplier.getAsDouble(),
-            m_drivetrainSubsystem.getGyroscopeRotation()
-)
-        );
+                m_translationXSupplier.getAsDouble(),
+                m_translationYSupplier.getAsDouble(),
+                m_rotationSupplier.getAsDouble(),
+                m_drivetrainSubsystem.getGyroscopeRotation())
+            );
+        //}
+        // else {
+        //     m_drivetrainSubsystem.drive(
+        //         new ChassisSpeeds(
+        //         m_translationXSupplier.getAsDouble(),
+        //         m_translationYSupplier.getAsDouble(),
+        //         m_rotationSupplier.getAsDouble(),
+        //         m_drivetrainSubsystem.getGyroscopeRotation())
+        //     );
+        }
     }
 
     @Override

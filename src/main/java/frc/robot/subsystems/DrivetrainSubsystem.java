@@ -229,6 +229,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     m_states = m_kinematics.toSwerveModuleStates(chassisSpeeds);
   }
 
+
   public void setWheelAngle(double angleInRad) {
      m_angleInRad = new Rotation2d(angleInRad);
      aIR = angleInRad;
@@ -268,17 +269,23 @@ public class DrivetrainSubsystem extends SubsystemBase {
         m_backLeftModule.set(m_states[BL].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[BL].angle.getRadians());
         m_backRightModule.set(m_states[BR].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[BR].angle.getRadians());      
      }
+
+     private SwerveModuleState getStateFromModule(SwerveModule module) {
+        return new SwerveModuleState(module.getDriveVelocity(), new Rotation2d(module.getSteerAngle()));
+     }
    
   //TODO: we guessed the m_states that are in the sample code
   @Override
   public void periodic() {
     m_odometry.update(
         m_navx.getRotation2d(),
-        m_states[FL],
-        m_states[FR],
-        m_states[BL],
-        m_states[BR]
+        getStateFromModule(m_frontLeftModule),
+        getStateFromModule(m_frontRightModule),
+        getStateFromModule(m_backLeftModule),
+        getStateFromModule(m_backRightModule)
     );
+
+
 
     SwerveModuleState[] states;
     if(driveMode) {
@@ -292,4 +299,15 @@ public class DrivetrainSubsystem extends SubsystemBase {
     setStatesInternal(states);
 
   }
+
+  public void forcingZero() {
+        for(int i = 0; i < 500; i++) {
+          m_frontLeftModule.set(0, 0);
+          m_frontRightModule.set(0, 0);
+          m_backLeftModule.set(0, 0);
+          m_backRightModule.set(0, 0);
+        }
+    }
+
+
 }
