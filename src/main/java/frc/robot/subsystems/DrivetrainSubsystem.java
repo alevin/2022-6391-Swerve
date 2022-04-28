@@ -182,6 +182,15 @@ public class DrivetrainSubsystem extends SubsystemBase {
     m_chassisSpeeds = chassisSpeeds;
   }
 
+  public void forcingZero() {
+     for(int i = 0; i <= 500;i++) {
+
+     }
+  }
+  
+
+
+
   @Override
   public void periodic() {
     SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
